@@ -1,0 +1,121 @@
+{% extends 'Dating_Site_App/base.html' %}
+
+{% block title %} Profile Edit {% endblock %}
+
+{% block ProfileButton %}
+<a class="nav-link" href="{% url 'profile' user.username %}">Profile <span class="sr-only">(current)</span></a>
+{% endblock %}
+
+{% block content %}
+
+<main role="main">
+
+    <div class="jumbotron" style="padding: 100px;">
+        <div class="container">
+            <h1 class="display-3">Hello, {{user.get_full_name}}</h1>
+
+            <form action="{% url 'editpage' user.username %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="display: grid; grid-template-columns: 3fr 1fr; column-gap: 25px">
+                <div>
+                    <div style="width: 50%" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Username</span>
+                        </div>
+                        <input name="username" value="{{user.username}}" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; width: 50%; column-gap: 25px">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">First Name</span>
+                            </div>
+                            <input name="first_name" style="width: 30%; min-width: 0" value="{{user.first_name}}" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Last Name</span>
+                            </div>
+                            <input name="last_name" style="width: 30%; min-width: 0" value="{{user.last_name}}" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+
+                    <div style="width: 50%" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Email-Address</span>
+                        </div>
+                        <span name="email" style="border-radius: 0 .25rem .25rem 0;" class="input-group-text" id="basic-addon1">{{user.email}}</span>
+                    </div>
+
+                    <div style="width: 50%" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+                        </div>
+                        <select name="gender" class="custom-select" id="inputGroupSelect01">
+                        {% if user.profile.gender == 'M' %}
+                        <option selected value="M">M</option>
+                        <option value="F">F</option>
+                        <option value="Others">Others</option>
+                        {% elif user.profile.gender == 'F' %}
+                        <option selected value="F">F</option>
+                        <option value="M">M</option>
+                        <option value="Others">Others</option>
+                        {% else %}
+                        <option selected value="Others">Others</option>
+                        <option value="M">M</option>
+                        <option value="F">F</option>
+                        {% endif %}
+                        </select>
+                    </div>
+
+                    <div style="width: 50%" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Date of Birth</span>
+                        </div>
+                        <input name="DOB" value="{{user.profile.DOB.year}}-{% if user.profile.DOB.month < 10%}0{% endif %}{{user.profile.DOB.month}}-{% if user.profile.DOB.day < 10%}0{% endif %}{{user.profile.DOB.day}}" type="date" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+
+                    <div style="width: 50%" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Status</label>
+                        </div>
+                        <select name="status" class="custom-select" id="inputGroupSelect01">
+                        {% if user.profile.status == 'single' %}
+                        <option selected value="single">Single</option>
+                        <option value="committed">Committed</option>
+                        {% else %}
+                        <option selected value="committed">Committed</option>
+                        <option value="single">Single</option>
+                        {% endif %}
+                        </select>
+                    </div>
+
+                    <div style="width: 50%" class="input-group">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">Bio</span>
+                        </div>
+                        <textarea name="bio" class="form-control" aria-label="With textarea" maxlength="100">{{user.profile.bio}}</textarea>
+                    </div>
+                </div>
+                <div>
+                    <img src="{{user.profile.profilephoto.url}}" alt="ProfilePhoto" class="img-thumbnail">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">Upload</span>
+                        </div>
+                        <div class="custom-file">
+                        <input name="profilephoto" type="file" class="custom-file-input" id="inputGroupFile01" accept=".jpg" >
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary" href="#" style="font-size: 12px;"></input>
+            
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

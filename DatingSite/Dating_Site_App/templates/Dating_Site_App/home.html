@@ -1,0 +1,134 @@
+{% extends 'Dating_Site_App/base.html' %}
+
+{% comment %} {% load friendshiptags %} {% endcomment %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+<main role="main">
+    <div class="jumbotron" style="padding: 100px; padding-top: 50px;">
+        <div class="container">
+            <h1 class="display-3" style="margin-bottom: 50px;">Hello, {{currUser.get_full_name}}</h1>
+
+            <div>
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="display: flex; column-gap: 10px">
+                        {% for user_,age in filteredUsers.items %}
+                            <div>
+                                <div class="card" style="width: 15rem;">
+                                    <img class="card-img-top" src="{{user.profile.profilephoto.url}}" alt="{{user.profile.profilephoto.url}}">
+                                    <div class="card-body">
+                                    <h5 class="card-title">{{user_.get_full_name}}</h5>
+                                    <p class="card-text">{{user_.profile.bio}}</p>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Gender: {{user_.profile.gender}}</li>
+                                    <li class="list-group-item" id="agelabel">Age: {{age}}</li>
+                                    <li class="list-group-item">Status: {{user_.profile.status}}</li>
+                                    </ul>
+                                    <div class="card-body">
+                                    {% if user_ in sentfriendReqList %}
+                                    <button style="margin: 5 5 5 5" type="button" class="btn btn-light">Request Sent!</button>
+                                    {% else %}
+                                    <a style="margin: 5 5 5 5; font-size: .875rem" class="btn btn-primary" href="{% url 'sendmessagerequest' user_.username %}">Send Message Request</a>
+                                    {% endif %}
+                                    <a style="margin: 5 5 5 5;" class="btn btn-secondary" href="{{user_.username}}/">Go to Profile</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div style="margin-left: 10px;">
+                        <div class="card" style="width: 20vw">
+                            <div class="card-body">
+                                <p><b>Filter Users</b></p>
+
+                                <form action="{% url 'home' %}" method="post">
+                                {% csrf_token %}
+
+                                <div style="margin-bottom: 16px">
+                                    <p style="margin-bottom: 0">Gender: </p>
+                                    <div class="form-check">
+                                        {% if userFilters.gender_male %}
+                                        <input name="gender_male" class="form-check-input" type="checkbox" id="male_Check" checked>
+                                        {% else %}
+                                        <input name="gender_male" class="form-check-input" type="checkbox" value="true" id="male_Check">
+                                        {% endif %}
+                                        <label class="form-check-label" for="male_Check">
+                                          Male
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        {% if userFilters.gender_female %}
+                                        <input name="gender_female" class="form-check-input" type="checkbox" value="true" id="female_Check" checked>
+                                        {% else %}
+                                        <input name="gender_female" class="form-check-input" type="checkbox" value="true" id="female_Check">
+                                        {% endif %}
+                                        <label class="form-check-label" for="female_Check">
+                                          Female
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        {% if userFilters.gender_others %}
+                                        <input name="gender_others" class="form-check-input" type="checkbox" value="true" id="others_Check" checked>
+                                        {% else %}
+                                        <input name="gender_others" class="form-check-input" type="checkbox" value="true" id="others_Check">
+                                        {% endif %}
+                                        <label class="form-check-label" for="others_Check">
+                                          Others
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 16px">
+                                    <p style="margin-bottom: 5px">Age: </p>
+                                    <div class="input-group">
+                                        <input name="age_from" type="text" class="form-control" placeholder="To" value={{userFilters.age_from}}>
+                                        <input name="age_to" type="text" class="form-control" placeholder="From" value={{userFilters.age_to}}>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 16px">
+                                    <p style="margin-bottom: 0">Status: </p>
+                                    <div class="form-check">
+                                        {% if userFilters.status_single %}
+                                        <input name="status_single" class="form-check-input" type="checkbox" value="true" id="single_Check" checked>
+                                        {% else %}
+                                        <input name="status_single" class="form-check-input" type="checkbox" value="true" id="single_Check">
+                                        {% endif %}
+                                        <label class="form-check-label" for="single_Check">
+                                          Single
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        {% if userFilters.status_committed %}
+                                        <input name="status_committed" class="form-check-input" type="checkbox" value="true" id="committed_Check" checked>
+                                        {% else %}
+                                        <input name="status_committed" class="form-check-input" type="checkbox" value="true" id="committed_Check">
+                                        {% endif %}
+                                        <label class="form-check-label" for="committed_Check">
+                                          Committed
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-outline-primary">Apply Filters</button>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>    
+    </div>
+
+</main>
+
+{% endblock %}

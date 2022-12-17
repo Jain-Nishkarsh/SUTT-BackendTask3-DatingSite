@@ -1,0 +1,94 @@
+{% extends 'Dating_Site_App/base.html' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block ProfileButton %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'profile' currUser.username %}">Profile <span class="sr-only">(current)</span></a>
+</li>
+{% endblock %}
+
+{% block content %}
+
+<main role="main">
+    <div class="jumbotron" style="padding: 100px;">
+        <div class="container">
+            <h1 class="display-3">Hello, {{user.get_full_name}}</h1>
+
+            <div style="display: grid; grid-template-columns: 3fr 1fr; column-gap: 25px">
+                <div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Username</span>
+                        </div>
+                        <span style="border-radius: 0 .25rem .25rem 0;" class="input-group-text" id="basic-addon1">{{user.username}}</span>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; width: 50%; column-gap: 25px">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">First Name</span>
+                            </div>
+                            <span style="border-radius: 0 .25rem .25rem 0;" class="input-group-text" id="basic-addon1">{{user.first_name}}</span>
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Last Name</span>
+                            </div>
+                            <span style="border-radius: 0 .25rem .25rem 0;" class="input-group-text" id="basic-addon1">{{user.last_name}}</span>
+                        </div>
+                    </div>
+
+                    <div style="width: 50%" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Email-Address</span>
+                        </div>
+                        <span style="border-radius: 0 .25rem .25rem 0;" class="input-group-text" id="basic-addon1">{{user.email}}</span>
+                    </div>
+
+                    <div style="width: 50%" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Gender</span>
+                        </div>
+                        <span style="border-radius: 0 .25rem .25rem 0;" class="input-group-text" id="basic-addon1">{{user.profile.gender}}</span>
+                    </div>
+
+                    <div style="width: 50%" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Date of Birth</span>
+                        </div>
+                        <span style="border-radius: 0 .25rem .25rem 0;" class="input-group-text" id="basic-addon1">{{user.profile.DOB}}</span>
+                    </div>
+
+                    <div style="width: 50%" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Status</span>
+                        </div>
+                        <span style="border-radius: 0 .25rem .25rem 0;" class="input-group-text" id="basic-addon1">{{user.profile.status}}</span>
+                    </div>
+
+                    <div style="width: 50%" class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Bio</span>
+                        </div>
+                        <span style="border-radius: 0 .25rem .25rem 0;" class="input-group-text" id="basic-addon1">{{user.profile.bio}}</span>
+                    </div>
+
+                    {% if user.username == currUser.username %}
+                    <a class="btn btn-primary" href="{% url 'editpage' user.username %}" role="button">Edit</a>
+                    {% endif %}
+                    
+                </div>
+
+                <div>
+                    <img src="{{user.profile.profilephoto.url}}" alt="{{user.profile.profilephoto.url}}" class="img-thumbnail" width=1000 height=1000>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}
