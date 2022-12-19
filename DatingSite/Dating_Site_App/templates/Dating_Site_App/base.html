@@ -38,7 +38,7 @@
                 {% endblock %}
                 {% block MessageRequestButton %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Message Request</a>
+                    <a class="nav-link" href="{% url 'messagerequestspage' %}">Message Request</a>
                 </li>
                 {% endblock %}
                 {% block Dropdown %}
@@ -50,6 +50,13 @@
                     </div>
                 </li>
                 {% endblock Dropdown %}
+                {% block LogoutButton %}
+                <li class="nav-item" style="display: flex; align-items:center;">
+                    <div style="width: 100%;">
+                        <a style="height: 2rem; display: flex; align-items: center; margin-left: 10px" class="btn btn-light" href="{% url 'logout' %}">Logout</a>
+                    </div>
+                </li>
+                {% endblock LogoutButton %}
             </ul>
         </div>
     </nav>

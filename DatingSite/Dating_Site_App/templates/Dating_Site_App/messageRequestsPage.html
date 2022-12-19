@@ -1,0 +1,59 @@
+{% extends 'Dating_Site_App/base.html' %}
+{% load friendshiptags %}
+
+{% block title %}Message Requests{% endblock title %}
+
+{% block MessageRequestButton %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'messagerequestspage' %}">Message Request</a>
+</li>
+{% endblock %}
+
+{% block content %}
+<main role="main">
+    <div class="jumbotron" style="padding: 100px; padding-top: 50px">
+        <div class="container">
+            <h1 class="display-3" style="margin-bottom: 20px;"><b>Message Requests - {{ignoredRequestscount}}</b></h1>
+            {% comment %} {% if unreadRequestscount > 0 %}
+                <h3>New Requests: {{unreadRequestscount}}</h3>
+                <div style="display: grid; grid-template-columns: auto">
+                    {% for msgreq, age in unreadRequests %}
+                    <div class="card" style="width: 50%; margin: 20px">
+                        <div class="card-body" style="display:flex">
+                            <img src="{{msgreq.profile.profilephoto.url}}" alt="{{msgreq.profile.profilephoto.url}}" width=200 height=200>
+                            <div style="display: flex; flex-direction: column; margin: auto">
+                                <h5>{{msgreq.get_full_name}}</h5>
+                                <p>{{msgreq.profile.gender}}, {{age}}, {{msgreq.profile.status}}</p>
+                                <div>
+                                    <a class="btn btn-success" href="{% url 'respondmessagerequest' fromuser=msgreq.username response='accept' %}">Accept</a>
+                                    <a class="btn btn-outline-danger" href="{% url 'respondmessagerequest' fromuser=msgreq.username response='reject' %}">Reject</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %} {% endcomment %}
+            {% comment %} <h3>Pending Requests: {{ignoredRequestscount}}</h3> {% endcomment %}
+            <div style="display: grid; grid-template-columns: 50% 50%; grid-column-gap: 10px">
+                {% for msgreq, age in ignoredRequests %}
+                <div class="card" style="width: 100%; margin: 20px">
+                    <div class="card-body" style="display:flex">
+                        <img src="{{msgreq.profile.profilephoto.url}}" alt="{{msgreq.profile.profilephoto.url}}" width=200 height=200>
+                        <div style="display: flex; flex-direction: column; margin: auto">
+                            <h5>{{msgreq.get_full_name}}</h5>
+                            <p>{{msgreq.profile.gender}}, {{age}}, {{msgreq.profile.status}}</p>
+                            <div>
+                                <a class="btn btn-success" href="{% url 'respondmessagerequest' fromuser=msgreq.username response='accept' %}">Accept</a>
+                                <a class="btn btn-outline-danger" href="{% url 'respondmessagerequest' fromuser=msgreq.username response='reject' %}">Reject</a>
+                            </div>
+                            <a class="btn btn-light" href="{% url 'profile' msgreq.username %}" style="margin-top: 1rem">Go to profile</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

@@ -12,7 +12,7 @@
 
     <div class="jumbotron" style="padding: 100px;">
         <div class="container">
-            <h1 class="display-3">Hello, {{user.get_full_name}}</h1>
+            <h1 class="display-3" style="margin-bottom: 20px">Hello, {{user.get_full_name}}</h1>
 
             <form action="{% url 'editpage' user.username %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -111,7 +111,7 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" class="btn btn-primary" href="#" style="font-size: 12px;"></input>
+            <input type="submit" class="btn btn-primary" href="#" style="margin-top: 1rem"></input>
             
             </form>
         </div>

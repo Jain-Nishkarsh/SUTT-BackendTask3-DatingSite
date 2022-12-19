@@ -6,6 +6,7 @@
 {% block ProfileButton %}{% endblock ProfileButton %}
 {% block MessageRequestButton %}{% endblock MessageRequestButton %}
 {% block Dropdown %}{% endblock Dropdown %}
+{% block LogoutButton %}{% endblock LogoutButton %}
 
 {% block content %}
 
@@ -25,7 +26,8 @@
             <div class="card text-center" style="width: 50%; margin: auto; height:20rem">
                 <div class="card-body" style="display: flex; align-items: center; flex-direction: column; justify-content: center;">
                   <h5 class="card-title">You're not logged in!</h5>
-                  <a href="/accounts/google/login/" class="btn btn-primary">Login with BITS ID</a>
+                  <a href="/accounts/google/login/" class="btn btn-primary" style="margin-bottom:5rem">Login with BITS ID</a>
+                  <a class="btn btn-link" href="{% url 'admin:index' %}" role="button">Moderator Login</a>
                 </div>
             </div>
         </div>

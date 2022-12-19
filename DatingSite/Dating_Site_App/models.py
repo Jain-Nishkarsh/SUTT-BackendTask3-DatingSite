@@ -18,16 +18,15 @@ class Profile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+        src_dir = r"/Users/nishkarsh/Programming/VS PYTHON/SUTT_Recruitment/Task3-DatingSite/DatingSite/media/images/DefaultPic.jpg"
+        dst_dir = f"/Users/nishkarsh/Programming/VS PYTHON/SUTT_Recruitment/Task3-DatingSite/DatingSite/media/{instance.username}_profilePic.jpg"
+        
+        im1 = Image.open(src_dir)
+        im2 = im1.copy()
+        im2.save(dst_dir)
+        
+        instance.profile.profilephoto = f"/{instance.username}_profilePic.jpg"
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-
-    src_dir = r"/Users/nishkarsh/Programming/VS PYTHON/SUTT_Recruitment/Task3-DatingSite/DatingSite/media/images/DefaultPic.jpg"
-    dst_dir = f"/Users/nishkarsh/Programming/VS PYTHON/SUTT_Recruitment/Task3-DatingSite/DatingSite/media/{instance.username}_profilePic.jpg"
-    
-    im1 = Image.open(src_dir)
-    im2 = im1.copy()
-    im2.save(dst_dir)
-    
-    instance.profile.profilephoto = f"/{instance.username}_profilePic.jpg"
     instance.profile.save()
