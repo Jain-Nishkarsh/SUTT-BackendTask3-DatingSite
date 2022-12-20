@@ -10,7 +10,7 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
+{% if request.user.is_authenticated %}
 <main role="main">
     <div class="jumbotron" style="padding: 100px;">
         <div class="container">

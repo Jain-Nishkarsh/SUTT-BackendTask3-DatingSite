@@ -1,0 +1,44 @@
+{% extends 'Dating_Site_App/base.html' %}
+{% load socialaccount %}
+
+{% block title %}Login Page{% endblock title %}
+
+{% block Dropdown %}
+<li class="nav-item dropdown active">
+    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">Other options</a>
+    <div class="dropdown-menu" aria-labelledby="dropdown01">
+        <a class="dropdown-item" href="{% url 'blocklist' %}">Blocklist</a>
+    </div>
+</li>
+{% endblock Dropdown %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<main role="main">
+    <div class="jumbotron" style="padding: 100px; padding-top: 50px">
+        <div class="container">
+            <h1 class="display-3" style="margin-bottom: 20px;"><b>Blocked Users: {{blockedUsersCount}}</b></h1>
+            <div style="display: flex">
+            {% for user in blockedUsers %}
+            <div class="card">
+                <div class="card-body" style="display: flex; column-gap: 5rem;">
+                    <img src="{{user.profile.profilephoto.url}}" alt="{{user.profile.profilephoto.url}}" width=100 height=100>
+                    <div style="display: flex; flex-direction: column; margin: auto">
+                        <h5>{{user.get_full_name}}</h5>
+                        <p style="margin: 0;">{{user.profile.gender}}, {{age}}, {{user.profile.status}}</p>
+                    </div>
+                    <div style="display:flex;flex-direction: column;justify-content: center;row-gap: 10px;">
+                        <a class="btn btn-outline-warning" href="{% url 'unblock' user.username %}">Unblock</a>
+                        <a class="btn btn-light" href="{% url 'profile' user.username %}">Go to profile</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endif %}
+{% endblock content %}

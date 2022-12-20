@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import UpdateView
 from django.contrib.auth.models import User
-from friendship.models import Friend, Follow, Block, FriendshipRequest
+from friendship.models import Friend, FriendshipManager, Block, FriendshipRequest
 from django.urls import reverse
 from django.core.files.storage import FileSystemStorage
 import datetime
@@ -43,8 +43,17 @@ def editProfile(request, username):
 
 def profile(request, username):
     userProfile = get_object_or_404(User, username=username)
+    blocked = Block.objects.is_blocked(request.user, userProfile)
+    friends = Friend.objects.are_friends(request.user, userProfile)
+    
+    sentfriendReqList = []
+    for sentReq in Friend.objects.sent_requests(user=request.user): sentfriendReqList.append(sentReq.to_user)
+    
     return render(request, 'Dating_Site_App/Profile.html', {'user':userProfile,
-                                                            'currUser':request.user})
+                                                            'currUser':request.user,
+                                                            'blocked':blocked,
+                                                            'friends':friends,
+                                                            'sentfriendReqList':sentfriendReqList})
     
 def home(request):
     if request.user.is_authenticated != True:
@@ -97,7 +106,8 @@ def home(request):
         if ((user.profile.gender in prefgender) 
             and age(user.profile.DOB) in range(age_from, age_to+1) 
             and (user.profile.status in prefstatus)
-            and (user.username != request.user.username)):
+            and (user.username != request.user.username)
+            and not Block.objects.is_blocked(request.user, user)):
             filteredUsers[user] = age(user.profile.DOB)
          
     sentfriendReqList = []
@@ -117,7 +127,13 @@ def home(request):
 def sendMessageRequest(request, touser):
     other_user = User.objects.get(username=touser)
     Friend.objects.add_friend(from_user=request.user,to_user=other_user)
-    return HttpResponseRedirect(reverse('home'))
+    return redirect(request.META.get('HTTP_REFERER'))
+
+def unsendMessageRequest(request, touser):
+    other_user = User.objects.get(username=touser)
+    friend_request = FriendshipRequest.objects.get(from_user=request.user, to_user=other_user)
+    friend_request.cancel()
+    return redirect(request.META.get('HTTP_REFERER'))
 
 def respondMessageRequest(request, fromuser, response):
     from_user = User.objects.get(username=fromuser)
@@ -130,28 +146,35 @@ def respondMessageRequest(request, fromuser, response):
         
     return HttpResponseRedirect(reverse('messagerequestspage'))
 
-
 def messageRequests(request):
     if request.user.is_authenticated != True:
         return HttpResponseRedirect(reverse('login'))
-    
-    # unreadRequests = []
-    # for req in Friend.objects.unread_requests(request.user):
-    #     unreadRequests.append([req.from_user, age(req.from_user.profile.DOB)])
-    #     FriendshipRequest.objects.get(from_user=req.from_user, to_user=request.user).mark_viewed()
-        
+      
     ignoredRequests = []
     for req in Friend.objects.unrejected_requests(request.user):
         ignoredRequests.append([req.from_user, age(req.from_user.profile.DOB)])
 
     return render(request, 'Dating_Site_App/messageRequestsPage.html', {'currUser':request.user,
-                                                                        # 'unreadRequests': unreadRequests,
-                                                                        # 'unreadRequestscount': Friend.objects.unread_request_count(request.user),
                                                                         'ignoredRequests': ignoredRequests,
                                                                         'ignoredRequestscount':Friend.objects.unrejected_request_count(request.user),})
     
-
 def blockUser(request, touser):
     other_user = User.objects.get(username=touser)
     Block.objects.add_block(request.user, other_user)
-    return HttpResponseRedirect(reverse('profile', args=(touser)))
+    Friend.objects.remove_friend(request.user, other_user)
+    return HttpResponseRedirect(reverse('profile', args=(other_user.username,)))
+
+def unblockUser(request, touser):
+    other_user = User.objects.get(username=touser)
+    Block.objects.remove_block(request.user, other_user)
+    return redirect(request.META.get('HTTP_REFERER'))
+
+def Unmatch(request, touser):
+    other_user = User.objects.get(username=touser)
+    Friend.objects.remove_friend(request.user, other_user)
+    return HttpResponseRedirect(reverse('home'))
+
+def blocklist(request):
+    return render(request, 'Dating_Site_App/blocklist.html', {'currUser':request.user,
+                                                              'blockedUsers':Block.objects.blocking(request.user),
+                                                              'blockedUsersCount': len(Block.objects.blocking(request.user))})

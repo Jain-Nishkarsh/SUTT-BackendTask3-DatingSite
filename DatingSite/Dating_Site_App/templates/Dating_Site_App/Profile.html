@@ -13,7 +13,11 @@
 <main role="main">
     <div class="jumbotron" style="padding: 100px;">
         <div class="container">
-            <h1 class="display-3" style="margin-bottom:20px">Hello, {{user.get_full_name}}</h1>
+            {% if user == currUser %}
+            <h1 class="display-3" style="margin-bottom: 3rem;">Hello, {{user.get_full_name}}</h1>
+            {% else %}
+            <h1 class="display-3" style="margin-bottom: 3rem;">{{user.get_full_name}}'s Profile</h1>
+            {% endif %}
 
             <div style="display: grid; grid-template-columns: 3fr 1fr; column-gap: 25px">
                 <div>
@@ -81,8 +85,20 @@
                     
                 </div>
 
-                <div>
-                    <img src="{{user.profile.profilephoto.url}}" alt="{{user.profile.profilephoto.url}}" class="img-thumbnail" width=1000 height=1000 style="margin-bottom: 5rem">
+                <div style="display: flex; flex-direction: column">
+                    <img src="{{user.profile.profilephoto.url}}" alt="{{user.profile.profilephoto.url}}" class="img-thumbnail" width=1000 height=1000 style="margin-bottom: 3rem">
+                    {% if friends %}
+                    <a class="btn btn-light" style="margin-bottom: 10px;" href="{% url 'unmatch' user.username %}">Unmatch!</a>
+                    <a class="btn btn-danger" style="color: white" href="{% url 'block' user.username %}" >Block User</a>
+                    {% elif blocked %}
+                    <a class="btn btn-warning" href="{% url 'unblock' user.username %}">Unblock</a>
+                    {% elif user in sentfriendReqList %}
+                    <a class="btn btn-light" href="{% url 'unsendmessagerequest' user.username %}">Unsend Message Request!</a>
+                    {% comment %} <button type="button" class="btn btn-light">Request Sent!</button> {% endcomment %}
+                    {% elif user != currUser %}
+                    <a class="btn btn-primary" href="{% url 'sendmessagerequest' user.username %}">Send Message Request</a>
+                    {% endif %}
+
                 </div>
 
             </div>
