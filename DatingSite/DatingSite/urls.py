@@ -18,5 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Dating_Site_App.urls'))
+    path('chat/', include('Chat_App.urls')),
+    path('', include('Dating_Site_App.urls')),
 ]

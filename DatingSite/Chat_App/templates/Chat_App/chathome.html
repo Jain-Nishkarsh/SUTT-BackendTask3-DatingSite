@@ -1,0 +1,41 @@
+{% extends 'Dating_Site_App/base.html' %}
+
+{% block title %}Chat Home{% endblock title %}
+
+{% block ChatButton %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'Chat_App:chathome' %}">Chat <span class="sr-only">(current)</span></a>
+</li>
+{% endblock ChatButton %}
+
+{% block content %}
+
+<main role="main">
+    <div class="jumbotron" style="padding: 100px; padding-top: 50px;">
+        <div class="container">
+            <h1 class="display-3" style="margin-bottom: 3rem;">Hello, {{currUser.get_full_name}}</h1>
+            <div style="display: grid; grid-template-columns: 30% 70%; column-gap: 20px; justify-items: center;">
+                <div class="list-group">
+                    {% for friend, UnreadCount in friendListwUnreadCount.items %}
+                    <a href="{% url 'Chat_App:chatpage' friend.username %}" class="list-group-item list-group-item-action" style="display: flex;" id="{{friend.username}}">
+                        <img src="{{friend.profile.profilephoto.url}}" alt="{{friend.profile.profilephoto.url}}" height=50 width=50>
+                        <p style="margin: 0 15px 0 15px; display: flex; align-items: center;">{{friend.get_full_name}}</p>
+                        {% if UnreadCount > 0 %}
+                        <span class="badge badge-pill badge-primary" style="height: 1.25rem; display: flex; align-items: center; margin: auto">{{UnreadCount}}</span>
+                        {% endif %}
+                    </a>
+                    {% endfor %}
+                </div>
+                <div style="width: 100%;">
+                    {% block chatbox %}
+                    <div class="card" style="height: 30rem; display: flex; align-items: center; justify-content: space-around;">
+                        <h5>Select a conversation</h5>
+                    </div>
+                    {% endblock chatbox %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}

@@ -36,6 +36,11 @@
                     <a class="nav-link" href="{% url 'profile' currUser.username %}">Profile <span class="sr-only">(current)</span></a>
                 </li>
                 {% endblock %}
+                {% block ChatButton %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Chat_App:chathome' %}">Chat <span class="sr-only">(current)</span></a>
+                </li>
+                {% endblock %}
                 {% block MessageRequestButton %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'messagerequestspage' %}">Message Request</a>
@@ -47,6 +52,7 @@
                         aria-expanded="false">Other options</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown01">
                         <a class="dropdown-item" href="{% url 'blocklist' %}">Blocklist</a>
+                        <a class="dropdown-item" href="{% url 'allmatches' %}">All Matches</a>
                     </div>
                 </li>
                 {% endblock Dropdown %}

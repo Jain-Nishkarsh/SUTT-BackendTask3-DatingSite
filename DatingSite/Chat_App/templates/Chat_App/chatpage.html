@@ -1,0 +1,45 @@
+{% extends 'Chat_App/chathome.html' %}
+{% load static %}
+
+{% block title %}Chat with {{withUser.username}}{% endblock title %}
+
+{% block chatbox %}
+
+<div class="card" style="height: 30rem; display: flex; align-items: center;">
+    <div class="card" style="width: 95%; height: 100%; margin: 1rem;  overflow-y: scroll;">
+        <div style="height: 100%">
+            <div class="card-body" style="display: flex; flex-direction: column; padding-bottom: 0;" id="chatbox">
+        </div>
+        </div>
+    </div>
+    
+    <div class="input-group mb-3" style="margin: 10px; width: 90%; margin-bottom: 20px !important">
+        <input id="message_input" type="text" class="form-control" placeholder="Message" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="sendButton">Send</button>
+        </div>
+    </div>
+</div>
+
+{{request.user.username|json_script:"user_username"}}
+{{chatName|json_script:"chatbox-name"}}
+{{thisChatJSON|json_script:"this-chat"}}
+{{currUser.username|json_script:"currUser"}}
+{{withUser.username|json_script:"withUser"}}
+
+<style>
+    .toMessage {
+        max-width: 60%;
+        margin-left: auto;
+        border-radius: 20vw;
+    }
+    
+    .fromMessage {
+        width: fit-content;
+        max-width: 60%;
+        border-radius: 20vw;
+    }
+</style>
+<script src="{% static 'Chat_App/chatDetails.js' %}"></script>
+
+{% endblock chatbox %}

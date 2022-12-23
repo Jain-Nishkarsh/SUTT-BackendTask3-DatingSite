@@ -175,6 +175,20 @@ def Unmatch(request, touser):
     return HttpResponseRedirect(reverse('home'))
 
 def blocklist(request):
+    blockList = {}
+    for user in Block.objects.blocking(request.user):
+        blockList[user] = age(user.profile.DOB)
+        
     return render(request, 'Dating_Site_App/blocklist.html', {'currUser':request.user,
-                                                              'blockedUsers':Block.objects.blocking(request.user),
+                                                              'blockedUsers': blockList,
                                                               'blockedUsersCount': len(Block.objects.blocking(request.user))})
+    
+def allmatches(request):
+    friendList = {}
+    for user in Friend.objects.friends(request.user):
+        friendList[user] = age(user.profile.DOB)
+        
+    return render(request, 'Dating_Site_App/allMatches.html', {'currUser':request.user,
+                                                              'friendList': friendList,
+                                                              'friendsCount': len(Friend.objects.friends(request.user))})
+        

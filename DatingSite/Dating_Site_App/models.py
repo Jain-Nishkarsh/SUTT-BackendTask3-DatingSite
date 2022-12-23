@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.core.files.storage import FileSystemStorage
 from PIL import Image
 
 
@@ -18,6 +17,13 @@ class Profile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+        
+        # instance.profile.gender = instance.socialaccount_set.filter(provider='google')[0].extra_data['gender']
+        
+        # print('----')
+        # print(instance.socialaccount_set.filter(provider='google')[0])
+        # print('----')
+        
         src_dir = r"/Users/nishkarsh/Programming/VS PYTHON/SUTT_Recruitment/Task3-DatingSite/DatingSite/media/images/DefaultPic.jpg"
         dst_dir = f"/Users/nishkarsh/Programming/VS PYTHON/SUTT_Recruitment/Task3-DatingSite/DatingSite/media/{instance.username}_profilePic.jpg"
         
