@@ -10,8 +10,8 @@
 
 {% block content %}
 
-<main role="main">
-    <div class="jumbotron" style="padding: 100px;">
+<main role="main" style="height: 100%">
+    <div class="jumbotron" style="padding: 100px; margin-bottom: 0; height: 100%">
         <div class="container">
             {% if user == currUser %}
             <h1 class="display-3" style="margin-bottom: 3rem;">Hello, {{user.get_full_name}}</h1>

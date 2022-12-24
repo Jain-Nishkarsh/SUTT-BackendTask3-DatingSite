@@ -9,7 +9,7 @@
         aria-expanded="false">Other options</a>
     <div class="dropdown-menu" aria-labelledby="dropdown01">
         <a class="dropdown-item" href="{% url 'blocklist' %}">Blocklist</a>
-        <a class="dropdown-item" href="{% url 'blocklist' %}">All Matches</a>
+        <a class="dropdown-item" href="{% url 'allmatches' %}">All Matches</a>
     </div>
 </li>
 {% endblock Dropdown %}
@@ -17,8 +17,8 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<main role="main">
-    <div class="jumbotron" style="padding: 100px; padding-top: 50px">
+<main role="main" style="height: 100%">
+    <div class="jumbotron" style="padding: 100px; padding-top: 50px; margin-bottom: 0; height: 100%">
         <div class="container">
             <h1 class="display-3" style="margin-bottom: 20px;"><b>Blocked Users: {{blockedUsersCount}}</b></h1>
             <div style="display: grid; grid-template-columns: 50% 50%; column-gap: 10px">
