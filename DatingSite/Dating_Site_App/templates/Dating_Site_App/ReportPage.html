@@ -1,0 +1,31 @@
+{% extends 'Dating_Site_App/base.html' %}
+{% block title %}Report {{reportee.username}}{% endblock title %}
+
+{% block content %}
+
+<main role="main" style="height: 100%">
+    <div class="jumbotron" style="padding: 100px; height=100% margin-bottom: 0; height: 100%">
+        <div class="container" style="display:flex; height: 100%">
+            <div class="card text-center" style="width: 80%; margin: auto; height:75%">
+                <div class="card-body" style="display: flex; flex-direction: column; justify-content: center; row-gap: 3rem">
+                  <h5 class="card-title" style="margin-bottom: 0;">Report {{reportee.username}}</h5>
+                  <form action="{% url 'report' reportee.username %}" method="post" style="display: flex; flex-direction: column; row-gap: 2rem; align-items: center;">
+                  {% csrf_token %}
+                    <div class="input-group" style="max-width: 60%">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Report Message</span>
+                      </div>
+                      <textarea name="reportMessage" class="form-control" aria-label="With textarea"></textarea>
+                    </div>
+                    <div style="display: flex; column-gap: 2rem">
+                      <input type="submit" href="#" class="btn btn-danger" ></a>
+                      <a class="btn btn-outline-dark" href="{% url 'profile' reportee %}" role="button">Cancel</a>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

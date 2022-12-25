@@ -43,11 +43,14 @@
                         <div style="display: flex; flex-direction: column; margin: auto">
                             <h5>{{msgreq.get_full_name}}</h5>
                             <p>{{msgreq.profile.gender}}, {{age}}, {{msgreq.profile.status}}</p>
-                            <div>
+                            <div style="display: grid; grid-template-columns: auto auto; column-gap: 20px">
                                 <a class="btn btn-success" href="{% url 'respondmessagerequest' fromuser=msgreq.username response='accept' %}">Accept</a>
                                 <a class="btn btn-outline-danger" href="{% url 'respondmessagerequest' fromuser=msgreq.username response='reject' %}">Reject</a>
                             </div>
                             <a class="btn btn-light" href="{% url 'profile' msgreq.username %}" style="margin-top: 1rem">Go to profile</a>
+                            {% comment %} <div style="display: grid; grid-template-columns: 80% 20%">
+                                <a class="btn btn-light-outline" href="{% url 'report' msgreq.username %}" style="margin: 1rem 1rem 0 1rem; display: flex; align-items: center; justify-content: center;"><img src="/images/ReportIcon.png" style="max-width: 25px; max-height: 25px"></a>
+                            </div> {% endcomment %}
                         </div>
                     </div>
                 </div>

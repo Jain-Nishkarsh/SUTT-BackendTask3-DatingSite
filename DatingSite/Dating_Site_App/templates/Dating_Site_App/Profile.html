@@ -89,14 +89,25 @@
                     <img src="{{user.profile.profilephoto.url}}" alt="{{user.profile.profilephoto.url}}" class="img-thumbnail" width=1000 height=1000 style="margin-bottom: 3rem">
                     {% if friends %}
                     <a class="btn btn-light" style="margin-bottom: 10px;" href="{% url 'unmatch' user.username %}">Unmatch!</a>
+                    <div style="display: grid; grid-template-columns: 80% 20%">
                     <a class="btn btn-danger" style="color: white" href="{% url 'block' user.username %}" >Block User</a>
+                    <a class="btn btn-light-outline" href="{% url 'reportPage' user.username %}" style="display: flex; align-items: center; justify-content: center;"><img src="/images/ReportIcon.png" style="max-width: 25px; max-height: 25px"></a>
+                    </div>
                     {% elif blocked %}
+                    <div style="display: grid; grid-template-columns: 80% 20%">
+                    <a class="btn btn-warning" href="{% url 'unblock' user.username %}">Unblock</a>
+                    <a class="btn btn-light-outline" href="{% url 'reportPage' user.username %}" style="display: flex; align-items: center; justify-content: center;"><img src="/images/ReportIcon.png" style="max-width: 25px; max-height: 25px"></a>
+                    </div>
+                    {% elif blocked and reported %}
                     <a class="btn btn-warning" href="{% url 'unblock' user.username %}">Unblock</a>
                     {% elif user in sentfriendReqList %}
                     <a class="btn btn-light" href="{% url 'unsendmessagerequest' user.username %}">Unsend Message Request!</a>
                     {% comment %} <button type="button" class="btn btn-light">Request Sent!</button> {% endcomment %}
                     {% elif user != currUser %}
+                    <div style="display: grid; grid-template-columns: 80% 20%">
                     <a class="btn btn-primary" href="{% url 'sendmessagerequest' user.username %}">Send Message Request</a>
+                    <a class="btn btn-light-outline" href="{% url 'reportPage' user.username %}" style="display: flex; align-items: center; justify-content: center;"><img src="/images/ReportIcon.png" style="max-width: 25px; max-height: 25px"></a>
+                    </div>
                     {% endif %}
 
                 </div>

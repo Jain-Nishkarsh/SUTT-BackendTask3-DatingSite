@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     # 'Chat_App',
     'Chat_App.apps.ChatAppConfig',
     'channels',
+    'Moderator.apps.ModeratorConfig',
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
