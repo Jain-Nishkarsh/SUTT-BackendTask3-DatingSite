@@ -21,11 +21,10 @@
     </div>
 </div>
 
-{{request.user.username|json_script:"user_username"}}
-{{chatName|json_script:"chatbox-name"}}
 {{thisChatJSON|json_script:"this-chat"}}
+{{withUser.pk|json_script:"withuserID"}}
+{{request.user.pk|json_script:"curruserID"}}
 {{currUser.username|json_script:"currUser"}}
-{{withUser.username|json_script:"withUser"}}
 
 <style>
     .toMessage {
@@ -40,6 +39,7 @@
         border-radius: 20vw;
     }
 </style>
+
 <script src="{% static 'Chat_App/chatDetails.js' %}"></script>
 
 {% endblock chatbox %}

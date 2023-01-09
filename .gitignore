@@ -1,5 +1,5 @@
 NOTES.txt
 *.pyc
-# settings.py
-# DatingSite/media/
+settings.py
+DatingSite/media/
 DjangoVenv/

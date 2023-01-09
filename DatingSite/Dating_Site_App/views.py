@@ -48,14 +48,17 @@ def modLogin(request):
         
         username = request.POST.get('username')
         password = request.POST.get('password')
+        
+        try:
+            if not User.objects.get(username=username).is_superuser:
+                return HttpResponseRedirect(reverse('home'))
 
-        if not User.objects.get(username=username).is_superuser:
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect(reverse('Moderator:modhome'))
+        except:
             return HttpResponseRedirect(reverse('home'))
-
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('Moderator:modhome'))
     
     return HttpResponseRedirect(reverse('home'))
 

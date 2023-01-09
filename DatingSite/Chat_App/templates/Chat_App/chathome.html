@@ -17,11 +17,11 @@
             <div style="display: grid; grid-template-columns: 30% 70%; column-gap: 20px; justify-items: center;">
                 <div class="list-group">
                     {% for friend, UnreadCount in friendListwUnreadCount.items %}
-                    <a href="{% url 'Chat_App:chatpage' friend.username %}" class="list-group-item list-group-item-action" style="display: flex;" id="{{friend.username}}">
+                    <a href="{% url 'Chat_App:chatpage' friend.username %}" class="list-group-item list-group-item-action" style="display: flex;" id="{{friend.pk}}">
                         <img src="{{friend.profile.profilephoto.url}}" alt="{{friend.profile.profilephoto.url}}" height=50 width=50>
                         <p style="margin: 0 15px 0 15px; display: flex; align-items: center;">{{friend.get_full_name}}</p>
                         {% if UnreadCount > 0 %}
-                        <span class="badge badge-pill badge-primary" style="height: 1.25rem; display: flex; align-items: center; margin: auto">{{UnreadCount}}</span>
+                        <span id="unreadCount{{friend.pk}}" class="badge badge-pill badge-primary" style="height: 1.25rem; display: flex; align-items: center; margin: auto">{{UnreadCount}}</span>
                         {% endif %}
                     </a>
                     {% endfor %}

@@ -1,51 +1,67 @@
 let currUser = JSON.parse(document.getElementById('currUser').textContent);
-let withUser = JSON.parse(document.getElementById('withUser').textContent);
+let withuserID = JSON.parse(document.getElementById('withuserID').textContent);
 
-let userBlock = document.getElementById(withUser);
+let userBlock = document.getElementById(withuserID);
 userBlock.classList.add('active');
 
-const user_username = JSON.parse(document.getElementById('user_username').textContent);
+const curruserID = Number(JSON.parse(document.getElementById('curruserID').textContent));
 
 document.querySelector('#sendButton').onclick = function(e) {
     const messageInput = document.querySelector('#message_input');
     const message = messageInput.value;
-    chatSocket.send(JSON.stringify(
+    receiverSocket.send(JSON.stringify(
         {
-            message,
-            username: user_username,
+            message: message,
+            senderID: curruserID,
         }
     ));
+
+    const newDiv = document.createElement('div');
+    newDiv.className = ['alert', 'alert-primary', 'toMessage'].join(" ");
+    newDiv.innerText = message;
+    document.querySelector('.card-body').appendChild(newDiv);
+    newDiv.scrollIntoView(true);
+
+    console.log('Sent to ' + receiverSocket.url);
     messageInput.value = '';
 };
 
 document.body.onkeydown = (ev) => {
     if (ev.key === 'Enter') {
-        document.querySelector('#sendButton').click()
+        document.querySelector('#sendButton').click();
     }
 }
 
-const chatboxName = JSON.parse(document.getElementById('chatbox-name').textContent);
-const chatSocket = new WebSocket(
+const receiverSocket = new WebSocket(
     'ws://' +
     window.location.host +
     '/ws/chat/' +
-    chatboxName +
+    withuserID +
     '/'
 );
 
+const senderSocket = new WebSocket(
+    'ws://' +
+    window.location.host +
+    '/ws/chat/' +
+    curruserID +
+    '/'
+)
 
-chatSocket.onmessage = function(e) {
-    const data = JSON.parse(e.data)
-    // document.querySelector('#chat-text').value += (data.message + ' sent by ' + data.username + '\n');
-    const newDiv = document.createElement('div');
-    if (data.username == currUser) {
-        newDiv.className = ['alert', 'alert-primary', 'toMessage'].join(" ");
-    } else if (data.username == withUser) {
+senderSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+
+    if (data.senderID == withuserID) {
+        const newDiv = document.createElement('div');
         newDiv.className = ['alert', 'alert-secondary', 'fromMessage'].join(" ");
+        newDiv.innerText = data.message;
+        document.querySelector('.card-body').appendChild(newDiv);
+        newDiv.scrollIntoView(true);
+    } else {
+        const senderMessageCount = document.getElementById('unreadCount'+ data.senderID);
+        senderMessageCount.innerText = `${(parseInt(senderMessageCount.innerText) || 0) + 1}`
     }
-    newDiv.innerText = data.message;
-    document.querySelector('.card-body').appendChild(newDiv);
-    newDiv.scrollIntoView(true);
+
 };
 
 document.body.onload = () => {
@@ -54,17 +70,21 @@ document.body.onload = () => {
         
         // document.querySelector('#chat-text').value = JSON.parse(document.getElementById('this-chat').textContent);
         JSONString.forEach((ele) => {
-            const { sender, receiver, content } = ele;
+            const { senderID, receiver, content } = ele;
             const newDiv = document.createElement('div');
             // console.log(currUser, withUser);
-            if (sender == currUser) {
+            if (senderID == curruserID) {
                 newDiv.className = ['alert', 'alert-primary', 'toMessage'].join(" ");
-            } else if (sender == withUser) {
+            } else if (senderID == withuserID) {
                 newDiv.className = ['alert', 'alert-secondary', 'fromMessage'].join(" ");
             }
             newDiv.innerText = content;
             document.querySelector('.card-body').appendChild(newDiv);
             newDiv.scrollIntoView(true);
         })
+
+        const messageCount = document.getElementById('unreadCount'+ withuserID);
+        messageCount.innerText = '';
+        
     }, 1000)
 }
